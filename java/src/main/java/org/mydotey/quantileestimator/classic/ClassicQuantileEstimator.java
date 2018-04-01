@@ -1,4 +1,4 @@
-package org.mydotey.quantileestimator.simple;
+package org.mydotey.quantileestimator.classic;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -7,24 +7,22 @@ import java.util.Objects;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.mydotey.quantileestimator.QuantileEstimator;
-import org.mydotey.quantileestimator.QuantileEstimatorConfig;
-import org.mydotey.quantileestimator.ValueCaculator;
 
 /**
  * @author koqizhao
  *
  * Apr 1, 2018
  */
-public class SimpleQuantileEstimator<T> implements QuantileEstimator<T> {
+public class ClassicQuantileEstimator<T> implements QuantileEstimator<T> {
 
-    private QuantileEstimatorConfig<T> _config;
+    private ClassicQuantileEstimatorConfig<T> _config;
 
     private volatile LinkedList<T> _sortedSamples;
     private ConcurrentLinkedQueue<T> _cache;
 
     private Object _lock;
 
-    public SimpleQuantileEstimator(QuantileEstimatorConfig<T> config) {
+    public ClassicQuantileEstimator(ClassicQuantileEstimatorConfig<T> config) {
         Objects.requireNonNull(config, "config is null");
         _config = config;
 

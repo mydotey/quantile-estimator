@@ -1,6 +1,6 @@
 package org.mydotey.quantileestimator.value;
 
-import org.mydotey.quantileestimator.ValueCaculator;
+import org.mydotey.quantileestimator.classic.ValueCaculator;
 
 /**
  * @author koqizhao

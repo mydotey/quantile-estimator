@@ -1,4 +1,4 @@
-package org.mydotey.quantileestimator;
+package org.mydotey.quantileestimator.classic;
 
 /**
  * @author koqizhao

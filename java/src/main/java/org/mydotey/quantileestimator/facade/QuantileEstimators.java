@@ -3,13 +3,12 @@ package org.mydotey.quantileestimator.facade;
 import java.util.Comparator;
 
 import org.mydotey.quantileestimator.QuantileEstimator;
-import org.mydotey.quantileestimator.QuantileEstimatorConfig;
-import org.mydotey.quantileestimator.ValueCaculator;
-import org.mydotey.quantileestimator.kll.DefaultKllQuantileEstimatorConfig;
-import org.mydotey.quantileestimator.kll.KllQuantileEstimator;
+import org.mydotey.quantileestimator.classic.ClassicQuantileEstimatorConfig;
+import org.mydotey.quantileestimator.classic.ClassicQuantileEstimator;
+import org.mydotey.quantileestimator.classic.ValueCaculator;
 import org.mydotey.quantileestimator.kll.KllQuantileEstimatorConfig;
-import org.mydotey.quantileestimator.simple.SimpleQuantileEstimator;
-import org.mydotey.quantileestimator.simple.SimpleQuantileEstimatorConfig;
+import org.mydotey.quantileestimator.validator.ValidatorDecorator;
+import org.mydotey.quantileestimator.kll.KllQuantileEstimator;
 
 /**
  * @author koqizhao
@@ -22,22 +21,16 @@ public class QuantileEstimators {
 
     }
 
-    public static <T> QuantileEstimatorConfig<T> newSimpleConfig(ValueCaculator<T> caculator,
-            Comparator<T> comparator) {
-        return new SimpleQuantileEstimatorConfig<>(caculator, comparator);
+    public static <T> QuantileEstimator<T> newClassicEstimator(Comparator<T> comparator, ValueCaculator<T> caculator) {
+        QuantileEstimator<T> quantileEstimator = new ClassicQuantileEstimator<>(
+                new ClassicQuantileEstimatorConfig<>(comparator, caculator));
+        return new ValidatorDecorator<>(quantileEstimator);
     }
 
-    public static <T> QuantileEstimator<T> newSimpleEstimator(QuantileEstimatorConfig<T> config) {
-        return new SimpleQuantileEstimator<>(config);
-    }
-
-    public static <T> KllQuantileEstimatorConfig<T> newKllConfig(ValueCaculator<T> caculator, Comparator<T> comparator,
-            int k) {
-        return new DefaultKllQuantileEstimatorConfig<>(caculator, comparator, k);
-    }
-
-    public static <T> QuantileEstimator<T> newKllEstimator(KllQuantileEstimatorConfig<T> config) {
-        return new KllQuantileEstimator<>(config);
+    public static <T> QuantileEstimator<T> newKllEstimator(Comparator<T> comparator, int k) {
+        QuantileEstimator<T> quantileEstimator = new KllQuantileEstimator<>(
+                new KllQuantileEstimatorConfig<>(comparator, k));
+        return new ValidatorDecorator<>(quantileEstimator);
     }
 
 }

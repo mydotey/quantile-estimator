@@ -204,7 +204,7 @@ public class KllQuantileEstimator<T> implements QuantileEstimator<T> {
         }
     }
 
-    protected class ItemAndQuantile implements Comparable<ItemAndQuantile> {
+    protected class ItemAndQuantile {
 
         public T item;
         public double quantile;
@@ -214,10 +214,6 @@ public class KllQuantileEstimator<T> implements QuantileEstimator<T> {
             this.quantile = quantile;
         }
 
-        @Override
-        public int compareTo(ItemAndQuantile o) {
-            return quantile > o.quantile ? 1 : (quantile == o.quantile ? 0 : -1);
-        }
     }
 
 }
