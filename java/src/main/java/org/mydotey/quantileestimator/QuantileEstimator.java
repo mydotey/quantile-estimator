@@ -5,7 +5,7 @@ package org.mydotey.quantileestimator;
  *
  * Mar 30, 2018
  */
-public interface QuantileEstimator<T extends Number> {
+public interface QuantileEstimator<T> {
 
 	void add(T value);
 
