@@ -31,12 +31,15 @@ public class KllQuantileEstimator<T> implements QuantileEstimator<T> {
     }
 
     @Override
-    public void add(T value) {
-        update(value);
+    public synchronized void add(T value) {
+        _compactors.get(0).add(value);
+        _size++;
+        if (_size >= _maxSize)
+            compress();
     }
 
     @Override
-    public T get(double quantile) {
+    public synchronized T get(double quantile) {
         List<ItemAndQuantile> itemsAndQuantiles = cdf();
         for (int i = 0; i < itemsAndQuantiles.size(); i++) {
             if (itemsAndQuantiles.get(i).quantile >= quantile)
@@ -62,27 +65,19 @@ public class KllQuantileEstimator<T> implements QuantileEstimator<T> {
         return (int) Math.ceil(Math.pow(_config.getC(), depth) * _config.getK()) + 1;
     }
 
-    protected void update(T item) {
-        _compactors.get(0).add(item);
-        _size++;
-        if (_size >= _maxSize)
-            compress();
-    }
-
     protected void compress() {
         for (int i = 0; i < _compactors.size(); i++) {
             if (_compactors.get(i).size() >= capacity(i)) {
-                if (i + 1 >= _h) {
+                if (i + 1 >= _h)
                     grow();
 
-                    _compactors.get(i + 1).addAll(_compactors.get(i).compact());
-                    int size = 0;
-                    for (int j = 0; j < _compactors.size(); j++)
-                        size += _compactors.get(j).size();
-                    _size = size;
+                _compactors.get(i + 1).addAll(_compactors.get(i).compact());
+                int size = 0;
+                for (int j = 0; j < _compactors.size(); j++)
+                    size += _compactors.get(j).size();
+                _size = size;
 
-                    break;
-                }
+                break;
             }
         }
     }
