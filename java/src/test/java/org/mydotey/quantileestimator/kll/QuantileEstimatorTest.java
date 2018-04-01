@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -18,11 +19,17 @@ import com.google.common.collect.Lists;
  */
 public abstract class QuantileEstimatorTest {
 
-    protected abstract <T> QuantileEstimator<T> newQuantileEstimator(Class<T> valueClazz);
+    @SuppressWarnings("rawtypes")
+    protected ConcurrentHashMap<Class<?>, QuantileEstimator> _estimators = new ConcurrentHashMap<>();
+
+    @SuppressWarnings("unchecked")
+    protected <T> QuantileEstimator<T> getQuantileEstimator(Class<T> valueClazz) {
+        return _estimators.get(valueClazz);
+    }
 
     @Test
     public void test1() {
-        QuantileEstimator<Long> quantileEstimator = newQuantileEstimator(Long.class);
+        QuantileEstimator<Long> quantileEstimator = getQuantileEstimator(Long.class);
         Long[] data = new Long[] { 199L, 76L, 581L, 960L, 757L, 699L, 944L, 225L, 766L, 887L, 900L, 913L, 738L, 330L,
                 829L, 323L, 384L, 449L, 636L, 484L };
         List<Long> items = Lists.newArrayList(data);
