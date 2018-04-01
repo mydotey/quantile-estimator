@@ -2,11 +2,11 @@ package org.mydotey.quantileestimator.facade;
 
 import java.util.Comparator;
 
-import org.mydotey.quantileestimator.DefaultQuantileEstimatorConfig;
 import org.mydotey.quantileestimator.QuantileEstimator;
 import org.mydotey.quantileestimator.QuantileEstimatorConfig;
 import org.mydotey.quantileestimator.ValueCaculator;
-import org.mydotey.quantileestimator.basic.BasicQuantileEstimator;
+import org.mydotey.quantileestimator.simple.SimpleQuantileEstimator;
+import org.mydotey.quantileestimator.simple.SimpleQuantileEstimatorConfig;
 
 /**
  * @author koqizhao
@@ -19,12 +19,12 @@ public class QuantileEstimators {
 
     }
 
-    public static <T> QuantileEstimatorConfig<T> newConfig(ValueCaculator<T> caculator, Comparator<T> comparator) {
-        return new DefaultQuantileEstimatorConfig<>(caculator, comparator);
+    public static <T> QuantileEstimatorConfig<T> newSimpleConfig(ValueCaculator<T> caculator, Comparator<T> comparator) {
+        return new SimpleQuantileEstimatorConfig<>(caculator, comparator);
     }
 
-    public static <T> QuantileEstimator<T> newBasic(QuantileEstimatorConfig<T> config) {
-        return new BasicQuantileEstimator<>(config);
+    public static <T> QuantileEstimator<T> newSimpleEstimator(QuantileEstimatorConfig<T> config) {
+        return new SimpleQuantileEstimator<>(config);
     }
 
 }

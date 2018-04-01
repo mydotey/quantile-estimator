@@ -12,7 +12,7 @@ import org.mydotey.quantileestimator.value.LongComparator;
  *
  * Apr 1, 2018
  */
-public class BasicQuantileEstimatorTest extends QuantileEstimatorTest {
+public class SimpleQuantileEstimatorTest extends QuantileEstimatorTest {
 
     @SuppressWarnings("rawtypes")
     private static ConcurrentHashMap<Class<?>, QuantileEstimator> _estimators;
@@ -20,7 +20,7 @@ public class BasicQuantileEstimatorTest extends QuantileEstimatorTest {
     static {
         _estimators = new ConcurrentHashMap<>();
         _estimators.put(Long.class, QuantileEstimators
-                .newBasic(QuantileEstimators.newConfig(LongCaculator.DEFAULT, LongComparator.DEFAULT)));
+                .newSimpleEstimator(QuantileEstimators.newSimpleConfig(LongCaculator.DEFAULT, LongComparator.DEFAULT)));
     }
 
     @SuppressWarnings("unchecked")

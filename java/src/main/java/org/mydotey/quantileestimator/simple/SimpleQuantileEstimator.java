@@ -1,4 +1,4 @@
-package org.mydotey.quantileestimator.basic;
+package org.mydotey.quantileestimator.simple;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -15,7 +15,7 @@ import org.mydotey.quantileestimator.ValueCaculator;
  *
  * Apr 1, 2018
  */
-public class BasicQuantileEstimator<T> implements QuantileEstimator<T> {
+public class SimpleQuantileEstimator<T> implements QuantileEstimator<T> {
 
     private QuantileEstimatorConfig<T> _config;
 
@@ -24,7 +24,7 @@ public class BasicQuantileEstimator<T> implements QuantileEstimator<T> {
 
     private Object _lock;
 
-    public BasicQuantileEstimator(QuantileEstimatorConfig<T> config) {
+    public SimpleQuantileEstimator(QuantileEstimatorConfig<T> config) {
         Objects.requireNonNull(config, "config is null");
         _config = config;
 
@@ -36,7 +36,7 @@ public class BasicQuantileEstimator<T> implements QuantileEstimator<T> {
 
     @Override
     public void add(T value) {
-        _cache.add(value);
+        _cache.offer(value);
     }
 
     @Override

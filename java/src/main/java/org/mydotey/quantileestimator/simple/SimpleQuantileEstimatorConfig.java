@@ -1,19 +1,22 @@
-package org.mydotey.quantileestimator;
+package org.mydotey.quantileestimator.simple;
 
 import java.util.Comparator;
 import java.util.Objects;
+
+import org.mydotey.quantileestimator.QuantileEstimatorConfig;
+import org.mydotey.quantileestimator.ValueCaculator;
 
 /**
  * @author koqizhao
  *
  * Apr 1, 2018
  */
-public class DefaultQuantileEstimatorConfig<T> implements QuantileEstimatorConfig<T> {
+public class SimpleQuantileEstimatorConfig<T> implements QuantileEstimatorConfig<T> {
 
     private ValueCaculator<T> _caculator;
     private Comparator<T> _comparator;
 
-    public DefaultQuantileEstimatorConfig(ValueCaculator<T> caculator, Comparator<T> comparator) {
+    public SimpleQuantileEstimatorConfig(ValueCaculator<T> caculator, Comparator<T> comparator) {
         Objects.requireNonNull(caculator, "caculator is null");
         Objects.requireNonNull(comparator, "comparator is null");
 
