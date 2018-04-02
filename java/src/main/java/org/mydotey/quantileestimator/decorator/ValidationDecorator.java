@@ -1,5 +1,7 @@
 package org.mydotey.quantileestimator.decorator;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import org.mydotey.quantileestimator.QuantileEstimator;
@@ -25,11 +27,15 @@ public class ValidationDecorator<T> implements QuantileEstimator<T> {
     }
 
     @Override
-    public T get(double quantile) {
-        if (quantile < 0 || quantile > 1)
-            throw new IllegalArgumentException("quantile is not valid: " + quantile);
+    public Map<Double, T> get(List<Double> quantiles) {
+        Objects.requireNonNull(quantiles, "quantiles is null");
 
-        return _quantileEstimator.get(quantile);
+        quantiles.forEach(quantile -> {
+            if (quantile == null || quantile < 0 || quantile > 1)
+                throw new IllegalArgumentException("quantile is not valid: " + quantile);
+        });
+
+        return _quantileEstimator.get(quantiles);
     }
 
 }

@@ -1,8 +1,10 @@
 package org.mydotey.quantileestimator.classic;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -39,16 +41,29 @@ public class ClassicQuantileEstimator<T> implements QuantileEstimator<T> {
     }
 
     @Override
-    public T get(double quantile) {
+    public Map<Double, T> get(List<Double> quantiles) {
         List<T> sortedSamples = getSortedSamples();
+        if (sortedSamples.isEmpty())
+            return null;
 
-        double n = sortedSamples.size();
-        double pos = quantile * (n - 1);
-        int lowerPos = (int) pos;
-        T lower = sortedSamples.get(lowerPos);
-        T upper = sortedSamples.get(lowerPos + 1);
+        HashMap<Double, T> results = new HashMap<>();
+        double n = sortedSamples.size() - 1;
         Calculator<T> caculator = _config.getValueCalculator();
-        return caculator.add(lower, caculator.multiply(caculator.subtract(upper, lower), pos - lowerPos));
+        for (int i = 0; i < quantiles.size(); i++) {
+            Double quantile = quantiles.get(i);
+            double pos = quantile * n;
+            int lowerPos = (int) pos;
+            int upperPos = lowerPos + 1;
+            T lower = sortedSamples.get(lowerPos);
+            if (upperPos <= n) {
+                T upper = sortedSamples.get(upperPos);
+                T result = caculator.add(lower, caculator.multiply(caculator.subtract(upper, lower), pos - lowerPos));
+                results.put(quantile, result);
+            } else
+                results.put(quantile, lower);
+        }
+
+        return results;
     }
 
     protected List<T> getSortedSamples() {

@@ -2,7 +2,9 @@ package org.mydotey.quantileestimator.kll;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import org.mydotey.quantileestimator.QuantileEstimator;
@@ -39,14 +41,36 @@ public class KllQuantileEstimator<T> implements QuantileEstimator<T> {
     }
 
     @Override
-    public synchronized T get(double quantile) {
+    public synchronized Map<Double, T> get(List<Double> quantiles) {
         List<ItemAndQuantile> itemsAndQuantiles = cdf();
-        for (int i = 0; i < itemsAndQuantiles.size(); i++) {
-            if (itemsAndQuantiles.get(i).quantile >= quantile)
-                return itemsAndQuantiles.get(i).item;
+        if (itemsAndQuantiles.isEmpty())
+            return null;
+
+        System.out.println(itemsAndQuantiles);
+        HashMap<Double, T> results = new HashMap<>();
+
+        int i = 0, j = 0;
+        while (i < quantiles.size() && j < itemsAndQuantiles.size()) {
+            Double quantile = quantiles.get(i);
+            ItemAndQuantile itemAndQuantile = itemsAndQuantiles.get(j);
+            if (itemAndQuantile.quantile < quantile) {
+                j++;
+                continue;
+            }
+
+            results.put(quantile, itemAndQuantile.item);
+            i++;
         }
 
-        return itemsAndQuantiles.get(itemsAndQuantiles.size() - 1).item;
+        if (i < quantiles.size()) {
+            T result = itemsAndQuantiles.get(j - 1).item;
+            for (; i < quantiles.size(); i++) {
+                Double quantile = quantiles.get(i);
+                results.put(quantile, result);
+            }
+        }
+
+        return results;
     }
 
     protected void grow() {
@@ -82,6 +106,30 @@ public class KllQuantileEstimator<T> implements QuantileEstimator<T> {
         }
     }
 
+    protected List<ItemAndQuantile> cdf() {
+        List<ItemAndWeight> itemsAndWeights = new ArrayList<>();
+        for (int i = 0; i < _compactors.size(); i++) {
+            for (int j = 0; j < _compactors.get(i).size(); j++) {
+                itemsAndWeights.add(new ItemAndWeight(_compactors.get(i).get(j), (int) Math.pow(2, i)));
+            }
+        }
+
+        int totWeight = 0;
+        for (ItemAndWeight itemAndWeight : itemsAndWeights)
+            totWeight += itemAndWeight.weight;
+
+        Collections.sort(itemsAndWeights);
+
+        List<ItemAndQuantile> cdf = new ArrayList<>();
+        int cumWeight = 0;
+        for (ItemAndWeight itemAndWeight : itemsAndWeights) {
+            cumWeight += itemAndWeight.weight;
+            cdf.add(new ItemAndQuantile(itemAndWeight.item, (double) cumWeight / totWeight));
+        }
+
+        return cdf;
+    }
+
     protected void merge(KllQuantileEstimator<T> other) {
         while (_h < other._h)
             grow();
@@ -108,30 +156,6 @@ public class KllQuantileEstimator<T> implements QuantileEstimator<T> {
         }
 
         return r;
-    }
-
-    protected List<ItemAndQuantile> cdf() {
-        List<ItemAndWeight> itemsAndWeights = new ArrayList<>();
-        for (int i = 0; i < _compactors.size(); i++) {
-            for (int j = 0; j < _compactors.get(i).size(); j++) {
-                itemsAndWeights.add(new ItemAndWeight(_compactors.get(i).get(j), (int) Math.pow(2, i)));
-            }
-        }
-
-        int totWeight = 0;
-        for (ItemAndWeight itemAndWeight : itemsAndWeights)
-            totWeight += itemAndWeight.weight;
-
-        Collections.sort(itemsAndWeights);
-
-        List<ItemAndQuantile> cdf = new ArrayList<>();
-        int cumWeight = 0;
-        for (ItemAndWeight itemAndWeight : itemsAndWeights) {
-            cumWeight += itemAndWeight.weight;
-            cdf.add(new ItemAndQuantile(itemAndWeight.item, (double) cumWeight / totWeight));
-        }
-
-        return cdf;
     }
 
     protected List<ItemAndWeight> ranks() {
@@ -209,6 +233,10 @@ public class KllQuantileEstimator<T> implements QuantileEstimator<T> {
             this.quantile = quantile;
         }
 
+        @Override
+        public String toString() {
+            return String.format("{ item: %s, quantile: %s }", item, quantile);
+        }
     }
 
 }

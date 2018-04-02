@@ -1,5 +1,8 @@
 package org.mydotey.quantileestimator;
 
+import java.util.Map;
+import java.util.List;
+
 /**
  * @author koqizhao
  *
@@ -7,8 +10,8 @@ package org.mydotey.quantileestimator;
  */
 public interface QuantileEstimator<T> {
 
-	void add(T value);
+    void add(T value);
 
-	T get(double quantile);
+    Map<Double, T> get(List<Double> quantiles);
 
 }

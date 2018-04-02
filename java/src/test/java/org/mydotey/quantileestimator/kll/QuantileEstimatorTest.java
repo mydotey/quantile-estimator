@@ -46,10 +46,12 @@ public abstract class QuantileEstimatorTest {
         HashMap<Double, Long> quantileResults = new HashMap<>();
         quantileResults.put(0.95, 944L);
 
-        for (Map.Entry<Double, Long> entry : quantileResults.entrySet()) {
-            double quantile = entry.getKey();
-            Long expected = entry.getValue();
-            Long actual = quantileEstimator.get(quantile);
+        List<Double> quantiles = Lists.newArrayList(quantileResults.keySet());
+        Map<Double, Long> results = quantileEstimator.get(quantiles);
+        for (int i = 0; i < quantiles.size(); i++) {
+            Double quantile = quantiles.get(i);
+            Long expected = quantileResults.get(quantile);
+            Long actual = results.get(quantile);
             System.out.println("quantile " + quantile + ", expected: " + expected + ", actual: " + actual);
             System.out.println();
 
