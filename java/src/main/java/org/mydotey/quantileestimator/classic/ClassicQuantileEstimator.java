@@ -8,6 +8,8 @@ import java.util.Objects;
 
 import org.mydotey.quantileestimator.QuantileEstimator;
 import org.mydotey.quantileestimator.value.Calculator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author koqizhao
@@ -15,6 +17,8 @@ import org.mydotey.quantileestimator.value.Calculator;
  * Apr 1, 2018
  */
 public class ClassicQuantileEstimator<T> implements QuantileEstimator<T> {
+
+    private static Logger logger = LoggerFactory.getLogger(ClassicQuantileEstimator.class);
 
     private ClassicQuantileEstimatorConfig<T> _config;
 
@@ -57,6 +61,14 @@ public class ClassicQuantileEstimator<T> implements QuantileEstimator<T> {
         }
 
         return results;
+    }
+
+    protected void defensiveReset() {
+        if (_values.size() == Integer.MAX_VALUE) {
+            logger.warn("count reached int.max, reset and prevent overflow");
+
+            _values.clear();
+        }
     }
 
 }
