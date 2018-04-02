@@ -1,5 +1,6 @@
 package org.mydotey.quantileestimator.decorator;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -31,6 +32,9 @@ public class ValidationDecorator<T> implements QuantileEstimator<T> {
     @Override
     public Map<Double, T> get(List<Double> quantiles) {
         Objects.requireNonNull(quantiles, "quantiles is null");
+
+        if (quantiles.isEmpty())
+            return new HashMap<>();
 
         quantiles.forEach(quantile -> {
             if (quantile == null || quantile < 0 || quantile > 1)

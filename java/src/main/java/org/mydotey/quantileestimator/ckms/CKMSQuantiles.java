@@ -72,8 +72,8 @@ class CKMSQuantiles<T> {
     /**
      * Buffers incoming items to be inserted in batch.
      */
-    private int bufferSize = 500;
-    private List<T> buffer = new ArrayList<>(bufferSize);
+    private int bufferSize;
+    private List<T> buffer;
 
     /**
      * Array of Quantiles that we care about, along with desired error.
@@ -82,11 +82,16 @@ class CKMSQuantiles<T> {
 
     private Comparator<T> comparator;
 
+    public CKMSQuantiles(List<Quantile> quantiles, Comparator<T> comparator) {
+        this(quantiles, comparator, 500);
+    }
+
     public CKMSQuantiles(List<Quantile> quantiles, Comparator<T> comparator, int bufferSize) {
         this.quantiles = quantiles;
         this.samples = new LinkedList<>();
         this.comparator = comparator;
         this.bufferSize = bufferSize;
+        this.buffer = new ArrayList<>(bufferSize);
     }
 
     /**
@@ -94,7 +99,7 @@ class CKMSQuantiles<T> {
      * 
      * @param value
      */
-    public synchronized void insert(T value) {
+    public void insert(T value) {
         buffer.add(value);
 
         if (buffer.size() == bufferSize) {
@@ -110,12 +115,12 @@ class CKMSQuantiles<T> {
      *            Queried quantile, e.g. 0.50 or 0.99.
      * @return Estimated value at that quantile.
      */
-    public synchronized T get(double q) {
+    public T get(double q) {
         // clear the buffer
         insertBatch();
         compress();
 
-        if (isEmpty())
+        if (samples.isEmpty())
             return null;
 
         int rankMin = 0;
@@ -137,10 +142,6 @@ class CKMSQuantiles<T> {
 
         // edge case of wanting max value
         return samples.getLast().value;
-    }
-
-    protected boolean isEmpty() {
-        return samples.isEmpty();
     }
 
     /**
@@ -186,7 +187,7 @@ class CKMSQuantiles<T> {
 
         // Base case: no samples
         int start = 0;
-        if (isEmpty()) {
+        if (samples.isEmpty()) {
             Item newItem = new Item(buffer.get(0), 1, 0);
             samples.add(newItem);
             start++;
@@ -276,7 +277,7 @@ class CKMSQuantiles<T> {
         }
     }
 
-    protected static class Quantile {
+    public static class Quantile {
         public final double quantile;
         public final double error;
         public final double u;

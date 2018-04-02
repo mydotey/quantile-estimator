@@ -14,12 +14,12 @@ import org.mydotey.quantileestimator.ckms.CKMSQuantiles.Quantile;
  *
  * Apr 2, 2018
  */
-public class CKMSQuantileEstimator<T> implements QuantileEstimator<T> {
+public class CkmsQuantileEstimator<T> implements QuantileEstimator<T> {
 
-    private CKMSQuantileEstimatorConfig<T> _config;
+    private CkmsQuantileEstimatorConfig<T> _config;
     private CKMSQuantiles<T> _ckmsQuantiles;
 
-    public CKMSQuantileEstimator(CKMSQuantileEstimatorConfig<T> config) {
+    public CkmsQuantileEstimator(CkmsQuantileEstimatorConfig<T> config) {
         Objects.requireNonNull(config, "config is null");
 
         _config = config;
@@ -29,7 +29,7 @@ public class CKMSQuantileEstimator<T> implements QuantileEstimator<T> {
             Quantile quantile = new Quantile(qc.getQuantile(), qc.getError());
             quantiles.add(quantile);
         });
-        _ckmsQuantiles = new CKMSQuantiles<>(quantiles, _config.getComparator(), 500);
+        _ckmsQuantiles = new CKMSQuantiles<>(quantiles, _config.getComparator());
     }
 
     @Override
@@ -39,14 +39,20 @@ public class CKMSQuantileEstimator<T> implements QuantileEstimator<T> {
 
     @Override
     public Map<Double, T> get(List<Double> quantiles) {
-        if (_ckmsQuantiles.isEmpty())
-            return null;
-
-        HashMap<Double, T> results = new HashMap<>();
+        HashMap<Double, T> results = null;
         for (Double quantile : quantiles) {
             T result = _ckmsQuantiles.get(quantile);
+            if (result == null)
+                return null;
+
+            if (results == null)
+                results = new HashMap<>();
+
             results.put(quantile, result);
         }
+
+        if (results == null)
+            results = new HashMap<>();
 
         return results;
     }
