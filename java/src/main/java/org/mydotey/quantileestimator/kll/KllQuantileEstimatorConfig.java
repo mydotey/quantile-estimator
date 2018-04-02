@@ -14,10 +14,18 @@ public class KllQuantileEstimatorConfig<T> {
     private int _k;
     private double _c;
 
+    /**
+     * c default to 2.0 / 3.0
+     * @param k    first compactor height is k * c
+     */
     public KllQuantileEstimatorConfig(Comparator<T> comparator, int k) {
         this(comparator, k, 2.0 / 3.0);
     }
 
+    /**
+     * @param k    first compactor height is k * c
+     * @param c    compaction rate
+     */
     public KllQuantileEstimatorConfig(Comparator<T> comparator, int k, double c) {
         Objects.requireNonNull(comparator, "comparator is null");
 
@@ -25,7 +33,7 @@ public class KllQuantileEstimatorConfig<T> {
             throw new IllegalArgumentException("k must be a positive integer.");
 
         if (c <= 0.5 || c > 1.0)
-            throw new IllegalArgumentException("c must larger than 0.5 and at most 1.0.");
+            throw new IllegalArgumentException("c must be larger than 0.5 and at most 1.0.");
 
         _comparator = comparator;
         _k = k;

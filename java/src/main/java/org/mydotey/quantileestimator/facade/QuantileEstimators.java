@@ -27,9 +27,23 @@ public class QuantileEstimators {
         return new ValidationDecorator<>(quantileEstimator);
     }
 
+    /**
+     * c default to 2.0 / 3.0
+     * @param k    first compactor height is k * c
+     */
     public static <T> QuantileEstimator<T> newKllEstimator(Comparator<T> comparator, int k) {
         QuantileEstimator<T> quantileEstimator = new KllQuantileEstimator<>(
                 new KllQuantileEstimatorConfig<>(comparator, k));
+        return new ValidationDecorator<>(quantileEstimator);
+    }
+
+    /**
+     * @param k    first compactor height is k * c
+     * @param c    compaction rate
+     */
+    public static <T> QuantileEstimator<T> newKllEstimator(Comparator<T> comparator, int k, double c) {
+        QuantileEstimator<T> quantileEstimator = new KllQuantileEstimator<>(
+                new KllQuantileEstimatorConfig<>(comparator, k, c));
         return new ValidationDecorator<>(quantileEstimator);
     }
 
