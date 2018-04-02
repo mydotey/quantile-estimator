@@ -1,11 +1,11 @@
-package org.mydotey.quantileestimator.classic;
+package org.mydotey.quantileestimator.value;
 
 /**
  * @author koqizhao
  *
  * Apr 1, 2018
  */
-public interface ValueCaculator<T> {
+public interface Calculator<T> {
 
     T add(T t, T t2);
 

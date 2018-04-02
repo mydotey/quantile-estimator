@@ -1,15 +1,13 @@
 package org.mydotey.quantileestimator.value;
 
-import org.mydotey.quantileestimator.classic.ValueCaculator;
-
 /**
  * @author koqizhao
  *
  * Apr 1, 2018
  */
-public class LongCaculator implements ValueCaculator<Long> {
+public class LongCalculator implements Calculator<Long> {
 
-    public static final LongCaculator DEFAULT = new LongCaculator();
+    public static final LongCalculator DEFAULT = new LongCalculator();
 
     @Override
     public Long add(Long t, Long t2) {

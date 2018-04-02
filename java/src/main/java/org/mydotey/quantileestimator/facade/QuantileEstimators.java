@@ -5,9 +5,9 @@ import java.util.Comparator;
 import org.mydotey.quantileestimator.QuantileEstimator;
 import org.mydotey.quantileestimator.classic.ClassicQuantileEstimatorConfig;
 import org.mydotey.quantileestimator.classic.ClassicQuantileEstimator;
-import org.mydotey.quantileestimator.classic.ValueCaculator;
 import org.mydotey.quantileestimator.decorator.ValidationDecorator;
 import org.mydotey.quantileestimator.kll.KllQuantileEstimatorConfig;
+import org.mydotey.quantileestimator.value.Calculator;
 import org.mydotey.quantileestimator.kll.KllQuantileEstimator;
 
 /**
@@ -21,9 +21,9 @@ public class QuantileEstimators {
 
     }
 
-    public static <T> QuantileEstimator<T> newClassicEstimator(Comparator<T> comparator, ValueCaculator<T> caculator) {
+    public static <T> QuantileEstimator<T> newClassicEstimator(Comparator<T> comparator, Calculator<T> calculator) {
         QuantileEstimator<T> quantileEstimator = new ClassicQuantileEstimator<>(
-                new ClassicQuantileEstimatorConfig<>(comparator, caculator));
+                new ClassicQuantileEstimatorConfig<>(comparator, calculator));
         return new ValidationDecorator<>(quantileEstimator);
     }
 

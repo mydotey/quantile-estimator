@@ -3,6 +3,8 @@ package org.mydotey.quantileestimator.classic;
 import java.util.Comparator;
 import java.util.Objects;
 
+import org.mydotey.quantileestimator.value.Calculator;
+
 /**
  * @author koqizhao
  *
@@ -11,22 +13,22 @@ import java.util.Objects;
 public class ClassicQuantileEstimatorConfig<T> {
 
     private Comparator<T> _comparator;
-    private ValueCaculator<T> _caculator;
+    private Calculator<T> _calculator;
 
-    public ClassicQuantileEstimatorConfig(Comparator<T> comparator, ValueCaculator<T> caculator) {
+    public ClassicQuantileEstimatorConfig(Comparator<T> comparator, Calculator<T> calculator) {
         Objects.requireNonNull(comparator, "comparator is null");
-        Objects.requireNonNull(caculator, "caculator is null");
+        Objects.requireNonNull(calculator, "calculator is null");
 
         _comparator = comparator;
-        _caculator = caculator;
+        _calculator = calculator;
     }
 
     public Comparator<T> getComparator() {
         return _comparator;
     }
 
-    public ValueCaculator<T> getValueCaculator() {
-        return _caculator;
+    public Calculator<T> getValueCalculator() {
+        return _calculator;
     }
 
 }

@@ -7,6 +7,7 @@ import java.util.Objects;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.mydotey.quantileestimator.QuantileEstimator;
+import org.mydotey.quantileestimator.value.Calculator;
 
 /**
  * @author koqizhao
@@ -46,7 +47,7 @@ public class ClassicQuantileEstimator<T> implements QuantileEstimator<T> {
         int lowerPos = (int) pos;
         T lower = sortedSamples.get(lowerPos);
         T upper = sortedSamples.get(lowerPos + 1);
-        ValueCaculator<T> caculator = _config.getValueCaculator();
+        Calculator<T> caculator = _config.getValueCalculator();
         return caculator.add(lower, caculator.multiply(caculator.subtract(upper, lower), pos - lowerPos));
     }
 
