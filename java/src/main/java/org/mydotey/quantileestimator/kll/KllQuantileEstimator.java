@@ -33,7 +33,7 @@ public class KllQuantileEstimator<T> implements QuantileEstimator<T> {
     }
 
     @Override
-    public synchronized void add(T value) {
+    public void add(T value) {
         _compactors.get(0).add(value);
         _size++;
         if (_size >= _maxSize)
@@ -41,12 +41,11 @@ public class KllQuantileEstimator<T> implements QuantileEstimator<T> {
     }
 
     @Override
-    public synchronized Map<Double, T> get(List<Double> quantiles) {
+    public Map<Double, T> get(List<Double> quantiles) {
         List<ItemAndQuantile> itemsAndQuantiles = cdf();
         if (itemsAndQuantiles.isEmpty())
             return null;
 
-        System.out.println(itemsAndQuantiles);
         HashMap<Double, T> results = new HashMap<>();
 
         int i = 0, j = 0;
