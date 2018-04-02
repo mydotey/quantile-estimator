@@ -1,6 +1,5 @@
 package org.mydotey.quantileestimator.kll;
 
-import org.mydotey.quantileestimator.QuantileEstimator;
 import org.mydotey.quantileestimator.QuantileEstimatorTest;
 import org.mydotey.quantileestimator.facade.QuantileEstimators;
 import org.mydotey.quantileestimator.value.IntComparator;
@@ -20,12 +19,19 @@ public class KllQuantileEstimatorTest extends QuantileEstimatorTest {
     }
 
     @Override
-    public void test5() {
-        int count = 100;
+    public void test5_2() {
+        int count = 1000;
+        int upperBound = 1000;
+        double errorRate = 0.01;
+        test5(count, upperBound, errorRate);
+    }
+
+    @Override
+    public void test5_3() {
+        int count = 10000;
         int upperBound = 1000;
         double errorRate = 0.05;
-        QuantileEstimator<Integer> quantileEstimator = getQuantileEstimator(Integer.class);
-        test5(quantileEstimator, count, upperBound, errorRate);
+        test5(count, upperBound, errorRate);
     }
 
 }

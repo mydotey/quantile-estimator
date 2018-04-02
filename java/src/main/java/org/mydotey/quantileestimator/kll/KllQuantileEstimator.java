@@ -199,7 +199,7 @@ public class KllQuantileEstimator<T> implements QuantileEstimator<T> {
                 }
             }
 
-            return this;
+            return result;
         }
     }
 

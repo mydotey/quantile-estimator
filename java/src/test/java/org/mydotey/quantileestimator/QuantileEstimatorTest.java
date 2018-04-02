@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.BiFunction;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -120,38 +121,61 @@ public abstract class QuantileEstimatorTest {
         int count = 100;
         int upperBound = 1000;
         double errorRate = 0.05;
-        QuantileEstimator<Integer> quantileEstimator = getQuantileEstimator(Integer.class);
-        test5(quantileEstimator, count, upperBound, errorRate);
+        test5(count, upperBound, errorRate);
     }
 
     @Test
     public void test5_2() {
         int count = 1000;
-        int upperBound = 10000;
+        int upperBound = 1000;
         double errorRate = 0.01;
-        QuantileEstimator<Integer> quantileEstimator = getQuantileEstimator(Integer.class);
-        test5(quantileEstimator, count, upperBound, errorRate);
+        test5(count, upperBound, errorRate);
     }
 
     @Test
     public void test5_3() {
         int count = 10000;
-        int upperBound = 100000;
+        int upperBound = 1000;
         double errorRate = 0.001;
-        QuantileEstimator<Integer> quantileEstimator = getQuantileEstimator(Integer.class);
-        test5(quantileEstimator, count, upperBound, errorRate);
+        test5(count, upperBound, errorRate);
     }
 
-    protected void test5(QuantileEstimator<Integer> quantileEstimator, int count, int upperBound, double errorRate) {
-        int maxError = (int) (upperBound * errorRate);
-        List<Integer> items = Lists.newArrayList();
+    protected void test5(int count, int upperBound, double errorRate) {
+        QuantileEstimator<Integer> quantileEstimator = getQuantileEstimator(Integer.class);
+        List<Double> quantiles = Lists.newArrayList(0.0, 0.001, 0.25, 0.50, 0.75, 0.90, 0.999, 1.0);
 
-        Random random = new Random();
-        for (int i = 0; i < count; i++) {
-            Integer item = random.nextInt(upperBound);
-            items.add(item);
-            quantileEstimator.add(item);
-        }
+        BiFunction<Integer, Integer, List<Integer>> balanceddataProvider = (c, b) -> {
+            HashMap<Integer, Integer> itemsAndCounts = new HashMap<>();
+            int distinctItemCount = c < b ? c : b;
+            int singleItemCount = c / b;
+            if (singleItemCount == 0)
+                singleItemCount = 1;
+
+            List<Integer> data = new ArrayList<>();
+            Random random = new Random();
+            while (data.size() < c) {
+                int item = random.nextInt(b);
+                Integer itemCount = itemsAndCounts.get(item);
+                if (itemCount != null && itemCount < singleItemCount) {
+                    itemsAndCounts.put(item, itemCount++);
+                    data.add(item);
+                } else if (itemCount == null && itemsAndCounts.keySet().size() < distinctItemCount) {
+                    itemsAndCounts.put(item, 1);
+                    data.add(item);
+                }
+            }
+
+            return data;
+        };
+
+        test(quantileEstimator, quantiles, count, upperBound, errorRate, balanceddataProvider);
+    }
+
+    protected void test(QuantileEstimator<Integer> quantileEstimator, List<Double> quantiles, int count, int upperBound,
+            double errorRate, BiFunction<Integer, Integer, List<Integer>> dataProvider) {
+        int maxError = (int) (upperBound * errorRate);
+        List<Integer> items = dataProvider.apply(count, upperBound);
+        items.forEach(item -> quantileEstimator.add(item));
 
         System.out.println("data: " + items);
         System.out.println();
@@ -160,7 +184,6 @@ public abstract class QuantileEstimatorTest {
         System.out.println("sorted: " + items);
         System.out.println();
 
-        List<Double> quantiles = Lists.newArrayList(0.0, 0.001, 0.25, 0.50, 0.75, 0.90, 0.999, 1.0);
         HashMap<Double, Integer> quantileResults = new HashMap<>();
         for (Double quantile : quantiles) {
             int pos = (int) (count * quantile) - 1;
