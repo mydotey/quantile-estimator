@@ -7,12 +7,12 @@ import java.util.Comparator;
  *
  * Apr 1, 2018
  */
-public class LongComparator implements Comparator<Long> {
+public class DoubleComparator implements Comparator<Double> {
 
-    public static final LongComparator DEFAULT = new LongComparator();
+    public static final DoubleComparator DEFAULT = new DoubleComparator();
 
     @Override
-    public int compare(Long o1, Long o2) {
+    public int compare(Double o1, Double o2) {
         return o1 > o2 ? 1 : (o1 == o2 ? 0 : -1);
     }
 

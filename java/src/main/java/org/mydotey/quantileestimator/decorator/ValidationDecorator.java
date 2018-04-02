@@ -22,7 +22,9 @@ public class ValidationDecorator<T> implements QuantileEstimator<T> {
 
     @Override
     public void add(T value) {
-        Objects.requireNonNull(value, "value is null");
+        if (value == null)
+            return;
+
         _quantileEstimator.add(value);
     }
 
