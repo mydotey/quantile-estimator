@@ -1,3 +1,3 @@
-# Quantile Estimator
+# Quantile
 
 ``

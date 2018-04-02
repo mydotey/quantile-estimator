@@ -3,13 +3,13 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.mydotey.quantileestimator</groupId>
-    <artifactId>quantile-estimator</artifactId>
+    <groupId>org.mydotey.quantile</groupId>
+    <artifactId>quantile</artifactId>
     <version>1.0.0</version>
-    <packaging>jar</packaging>
-    <name>mydotey quantile estimator</name>
-    <description>quantile algorithms' implementations for stream data</description>
-    <url>https://github.com/mydotey/quantile-estimator</url>
+    <packaging>pom</packaging>
+    <name>mydotey quantile</name>
+    <description>quantile algorithms, util</description>
+    <url>https://github.com/mydotey/quantile</url>
 
     <licenses>
         <license>
@@ -34,8 +34,8 @@
     </developers>
 
     <scm>
-        <url>https://github.com/mydotey/quantile-estimator</url>
-        <connection>git@github.com:mydotey/quantile-estimator.git</connection>
+        <url>https://github.com/mydotey/quantile</url>
+        <connection>git@github.com:mydotey/quantile.git</connection>
     </scm>  
 
     <properties>
@@ -51,12 +51,27 @@
         <nexus-staging-plugin.version>1.6.7</nexus-staging-plugin.version>
     </properties>
 
+    <modules>
+        <module>quantile-estimator</module>
+        <module>quantile-util</module>
+    </modules>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
                 <version>${slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mydotey.quantile</groupId>
+                <artifactId>quantile-estimator</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mydotey.quantile</groupId>
+                <artifactId>quantile-util</artifactId>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.google.guava</groupId>
@@ -78,28 +93,6 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
-    <dependencies>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
 
     <build>
         <plugins>
