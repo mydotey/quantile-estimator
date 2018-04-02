@@ -29,7 +29,7 @@ public class QuantileEstimators {
     }
 
     /**
-     * @param k    first compactor height is k * c
+     * @param k    first compactor size
      * c default to 2.0 / 3.0
      */
     public static <T> QuantileEstimator<T> newKllEstimator(Comparator<T> comparator, int k) {
@@ -39,7 +39,7 @@ public class QuantileEstimators {
     }
 
     /**
-     * @param k    first compactor height is k * c
+     * @param k    first compactor size
      * @param c    compaction rate
      */
     public static <T> QuantileEstimator<T> newKllEstimator(Comparator<T> comparator, int k, double c) {

@@ -15,15 +15,15 @@ public class KllQuantileEstimatorConfig<T> {
     private double _c;
 
     /**
+     * @param k    first compactor size
      * c default to 2.0 / 3.0
-     * @param k    first compactor height is k * c
      */
     public KllQuantileEstimatorConfig(Comparator<T> comparator, int k) {
         this(comparator, k, 2.0 / 3.0);
     }
 
     /**
-     * @param k    first compactor height is k * c
+     * @param k    first compactor size
      * @param c    compaction rate
      */
     public KllQuantileEstimatorConfig(Comparator<T> comparator, int k, double c) {
