@@ -30,10 +30,11 @@ import java.util.ArrayList;
  */
 
 /*
- * Editor: koqizhao
- * changes:
- *     remove cache & make it generic
- */
+   Editor: koqizhao
+   Changes:
+       1. remove synchronization 
+       2. make it generic
+*/
 
 import java.util.Comparator;
 import java.util.LinkedList;

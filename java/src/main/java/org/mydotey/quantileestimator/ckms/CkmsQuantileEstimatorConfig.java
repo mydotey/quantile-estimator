@@ -68,12 +68,12 @@ public class CkmsQuantileEstimatorConfig<T> {
         }
 
         public Builder<T> addQuantileConfig(double quantile, double error) {
-            String format = "%s %f invalid: Expected number between 0.0 and 1.0.";
+            String format = "%s %f invalid: expected number between 0.0 and 1.0.";
             if (quantile < 0.0 || quantile > 1.0)
-                throw new IllegalArgumentException(String.format(format, "Quantile", quantile));
+                throw new IllegalArgumentException(String.format(format, "quantile", quantile));
 
             if (error < 0.0 || error > 1.0)
-                throw new IllegalArgumentException(String.format(format, "Error", error));
+                throw new IllegalArgumentException(String.format(format, "error", error));
 
             _quantileConfigs.add(new QuantileConfig(quantile, error));
             return this;

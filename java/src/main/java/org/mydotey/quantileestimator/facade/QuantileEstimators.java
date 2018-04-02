@@ -9,6 +9,8 @@ import org.mydotey.quantileestimator.classic.ClassicQuantileEstimatorConfig;
 import org.mydotey.quantileestimator.classic.ClassicQuantileEstimator;
 import org.mydotey.quantileestimator.decorator.ConcurrencyDecorator;
 import org.mydotey.quantileestimator.decorator.ValidationDecorator;
+import org.mydotey.quantileestimator.gk.GkQuantileEstimator;
+import org.mydotey.quantileestimator.gk.GkQuantileEstimatorConfig;
 import org.mydotey.quantileestimator.kll.KllQuantileEstimatorConfig;
 import org.mydotey.quantileestimator.value.Calculator;
 import org.mydotey.quantileestimator.kll.KllQuantileEstimator;
@@ -56,6 +58,13 @@ public class QuantileEstimators {
 
     public static <T> QuantileEstimator<T> newCKmsEstimator(CkmsQuantileEstimatorConfig<T> config) {
         QuantileEstimator<T> quantileEstimator = new CkmsQuantileEstimator<>(config);
+        return decorate(quantileEstimator);
+    }
+
+    public static <T> QuantileEstimator<T> newGkEstimator(Comparator<T> comparator, double error,
+            int compactThreshold) {
+        QuantileEstimator<T> quantileEstimator = new GkQuantileEstimator<>(
+                new GkQuantileEstimatorConfig<>(comparator, error, compactThreshold));
         return decorate(quantileEstimator);
     }
 
