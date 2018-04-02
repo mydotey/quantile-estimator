@@ -1,4 +1,4 @@
-package org.mydotey.quantileestimator.validator;
+package org.mydotey.quantileestimator.decorator;
 
 import java.util.Objects;
 
@@ -9,11 +9,11 @@ import org.mydotey.quantileestimator.QuantileEstimator;
  *
  * Apr 1, 2018
  */
-public class ValidatorDecorator<T> implements QuantileEstimator<T> {
+public class ValidationDecorator<T> implements QuantileEstimator<T> {
 
     private QuantileEstimator<T> _quantileEstimator;
 
-    public ValidatorDecorator(QuantileEstimator<T> quantileEstimator) {
+    public ValidationDecorator(QuantileEstimator<T> quantileEstimator) {
         Objects.requireNonNull(quantileEstimator, "quantileEstimator is null");
         _quantileEstimator = quantileEstimator;
     }

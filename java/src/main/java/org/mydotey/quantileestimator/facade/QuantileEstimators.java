@@ -6,8 +6,8 @@ import org.mydotey.quantileestimator.QuantileEstimator;
 import org.mydotey.quantileestimator.classic.ClassicQuantileEstimatorConfig;
 import org.mydotey.quantileestimator.classic.ClassicQuantileEstimator;
 import org.mydotey.quantileestimator.classic.ValueCaculator;
+import org.mydotey.quantileestimator.decorator.ValidationDecorator;
 import org.mydotey.quantileestimator.kll.KllQuantileEstimatorConfig;
-import org.mydotey.quantileestimator.validator.ValidatorDecorator;
 import org.mydotey.quantileestimator.kll.KllQuantileEstimator;
 
 /**
@@ -24,13 +24,13 @@ public class QuantileEstimators {
     public static <T> QuantileEstimator<T> newClassicEstimator(Comparator<T> comparator, ValueCaculator<T> caculator) {
         QuantileEstimator<T> quantileEstimator = new ClassicQuantileEstimator<>(
                 new ClassicQuantileEstimatorConfig<>(comparator, caculator));
-        return new ValidatorDecorator<>(quantileEstimator);
+        return new ValidationDecorator<>(quantileEstimator);
     }
 
     public static <T> QuantileEstimator<T> newKllEstimator(Comparator<T> comparator, int k) {
         QuantileEstimator<T> quantileEstimator = new KllQuantileEstimator<>(
                 new KllQuantileEstimatorConfig<>(comparator, k));
-        return new ValidatorDecorator<>(quantileEstimator);
+        return new ValidationDecorator<>(quantileEstimator);
     }
 
 }
