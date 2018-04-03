@@ -31,13 +31,13 @@ public class ConcurrentQuantileEstimatorTest extends QuantileEstimatorTest {
         builder.setComparator(LongComparator.DEFAULT).addQuantileConfig(0.01, 0.001).addQuantileConfig(0.25, 0.01)
                 .addQuantileConfig(0.5, 0.01).addQuantileConfig(0.75, 0.01).addQuantileConfig(0.99, 0.001);
         _estimators.put(Long.class, QuantileEstimators
-                .newConcurrentQuantileEstimator(QuantileEstimators.newCKmsEstimator(builder.build())));
+                .newConcurrentEstimator(QuantileEstimators.newCkmsEstimator(builder.build())));
 
         CkmsQuantileEstimatorConfig.Builder<Integer> builder2 = QuantileEstimators.newCkmsEstimatorConfigBuilder();
         builder2.setComparator(IntComparator.DEFAULT).addQuantileConfig(0.01, 0.001).addQuantileConfig(0.25, 0.01)
                 .addQuantileConfig(0.5, 0.01).addQuantileConfig(0.75, 0.01).addQuantileConfig(0.99, 0.001);
         _estimators.put(Integer.class, QuantileEstimators
-                .newConcurrentQuantileEstimator(QuantileEstimators.newCKmsEstimator(builder2.build())));
+                .newConcurrentEstimator(QuantileEstimators.newCkmsEstimator(builder2.build())));
 
     }
 

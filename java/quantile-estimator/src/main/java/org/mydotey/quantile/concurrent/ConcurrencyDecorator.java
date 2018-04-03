@@ -1,4 +1,4 @@
-package org.mydotey.quantile.decorator;
+package org.mydotey.quantile.concurrent;
 
 import java.util.List;
 import java.util.Map;

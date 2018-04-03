@@ -8,14 +8,14 @@ import org.mydotey.quantile.ckms.CkmsQuantileEstimator;
 import org.mydotey.quantile.ckms.CkmsQuantileEstimatorConfig;
 import org.mydotey.quantile.classic.ClassicQuantileEstimator;
 import org.mydotey.quantile.classic.ClassicQuantileEstimatorConfig;
-import org.mydotey.quantile.decorator.ConcurrencyDecorator;
-import org.mydotey.quantile.decorator.ValidationDecorator;
+import org.mydotey.quantile.concurrent.ConcurrencyDecorator;
 import org.mydotey.quantile.gk.GkQuantileEstimator;
 import org.mydotey.quantile.gk.GkQuantileEstimatorConfig;
 import org.mydotey.quantile.kll.KllQuantileEstimator;
 import org.mydotey.quantile.kll.KllQuantileEstimatorConfig;
 import org.mydotey.quantile.timewindow.TimeWindowQuantileEstimator;
 import org.mydotey.quantile.timewindow.TimeWindowQuantileEstimatorConfig;
+import org.mydotey.quantile.validation.ValidationDecorator;
 import org.mydotey.quantile.value.Calculator;
 
 /**
@@ -32,7 +32,7 @@ public class QuantileEstimators {
     public static <T> QuantileEstimator<T> newClassicEstimator(Comparator<T> comparator, Calculator<T> calculator) {
         QuantileEstimator<T> quantileEstimator = new ClassicQuantileEstimator<>(
                 new ClassicQuantileEstimatorConfig<>(comparator, calculator));
-        return decorate(quantileEstimator);
+        return new ValidationDecorator<>(quantileEstimator);
     }
 
     /**
@@ -42,7 +42,7 @@ public class QuantileEstimators {
     public static <T> QuantileEstimator<T> newKllEstimator(Comparator<T> comparator, int k) {
         QuantileEstimator<T> quantileEstimator = new KllQuantileEstimator<>(
                 new KllQuantileEstimatorConfig<>(comparator, k));
-        return decorate(quantileEstimator);
+        return new ValidationDecorator<>(quantileEstimator);
     }
 
     /**
@@ -52,23 +52,23 @@ public class QuantileEstimators {
     public static <T> QuantileEstimator<T> newKllEstimator(Comparator<T> comparator, int k, double c) {
         QuantileEstimator<T> quantileEstimator = new KllQuantileEstimator<>(
                 new KllQuantileEstimatorConfig<>(comparator, k, c));
-        return decorate(quantileEstimator);
+        return new ValidationDecorator<>(quantileEstimator);
     }
 
     public static <T> CkmsQuantileEstimatorConfig.Builder<T> newCkmsEstimatorConfigBuilder() {
         return CkmsQuantileEstimatorConfig.<T> newBuiler();
     }
 
-    public static <T> QuantileEstimator<T> newCKmsEstimator(CkmsQuantileEstimatorConfig<T> config) {
+    public static <T> QuantileEstimator<T> newCkmsEstimator(CkmsQuantileEstimatorConfig<T> config) {
         QuantileEstimator<T> quantileEstimator = new CkmsQuantileEstimator<>(config);
-        return decorate(quantileEstimator);
+        return new ValidationDecorator<>(quantileEstimator);
     }
 
     public static <T> QuantileEstimator<T> newGkEstimator(Comparator<T> comparator, double error,
             int compactThreshold) {
         QuantileEstimator<T> quantileEstimator = new GkQuantileEstimator<>(
                 new GkQuantileEstimatorConfig<>(comparator, error, compactThreshold));
-        return decorate(quantileEstimator);
+        return new ValidationDecorator<>(quantileEstimator);
     }
 
     public static <T> QuantileEstimator<T> newTimeWindowEstimator(
@@ -78,13 +78,8 @@ public class QuantileEstimators {
                 timeWindowMillis, rotateDurationMillis));
     }
 
-    public static <T> QuantileEstimator<T> newConcurrentQuantileEstimator(QuantileEstimator<T> quantileEstimator) {
+    public static <T> QuantileEstimator<T> newConcurrentEstimator(QuantileEstimator<T> quantileEstimator) {
         return new ConcurrencyDecorator<>(quantileEstimator);
-    }
-
-    protected static <T> QuantileEstimator<T> decorate(QuantileEstimator<T> quantileEstimator) {
-        ValidationDecorator<T> validationDecorator = new ValidationDecorator<>(quantileEstimator);
-        return validationDecorator;
     }
 
 }

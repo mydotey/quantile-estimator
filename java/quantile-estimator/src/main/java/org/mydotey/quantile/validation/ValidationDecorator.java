@@ -1,4 +1,4 @@
-package org.mydotey.quantile.decorator;
+package org.mydotey.quantile.validation;
 
 import java.util.HashMap;
 import java.util.List;

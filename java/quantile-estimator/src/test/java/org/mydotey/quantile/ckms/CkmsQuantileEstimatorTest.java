@@ -18,12 +18,12 @@ public class CkmsQuantileEstimatorTest extends QuantileEstimatorTest {
         CkmsQuantileEstimatorConfig.Builder<Long> builder = QuantileEstimators.newCkmsEstimatorConfigBuilder();
         builder.setComparator(LongComparator.DEFAULT).addQuantileConfig(0.01, 0.001).addQuantileConfig(0.25, 0.01)
                 .addQuantileConfig(0.5, 0.01).addQuantileConfig(0.75, 0.01).addQuantileConfig(0.99, 0.001);
-        _estimators.put(Long.class, QuantileEstimators.newCKmsEstimator(builder.build()));
+        _estimators.put(Long.class, QuantileEstimators.newCkmsEstimator(builder.build()));
 
         CkmsQuantileEstimatorConfig.Builder<Integer> builder2 = QuantileEstimators.newCkmsEstimatorConfigBuilder();
         builder2.setComparator(IntComparator.DEFAULT).addQuantileConfig(0.01, 0.001).addQuantileConfig(0.25, 0.01)
                 .addQuantileConfig(0.5, 0.01).addQuantileConfig(0.75, 0.01).addQuantileConfig(0.99, 0.001);
-        _estimators.put(Integer.class, QuantileEstimators.newCKmsEstimator(builder2.build()));
+        _estimators.put(Integer.class, QuantileEstimators.newCkmsEstimator(builder2.build()));
     }
 
 }
