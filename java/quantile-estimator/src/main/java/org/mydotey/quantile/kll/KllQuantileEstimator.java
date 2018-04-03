@@ -13,6 +13,9 @@ import org.mydotey.quantile.QuantileEstimator;
  * @author koqizhao
  *
  * Mar 30, 2018
+ * 
+ * see also: https://github.com/edoliberty/streaming-quantiles
+ * 
  */
 public class KllQuantileEstimator<T> implements QuantileEstimator<T> {
 

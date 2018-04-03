@@ -38,7 +38,6 @@ public class ConcurrentQuantileEstimatorTest extends QuantileEstimatorTest {
                 .addQuantileConfig(0.5, 0.01).addQuantileConfig(0.75, 0.01).addQuantileConfig(0.99, 0.001);
         _estimators.put(Integer.class, QuantileEstimators
                 .newConcurrentEstimator(QuantileEstimators.newCkmsEstimator(builder2.build())));
-
     }
 
     @Override

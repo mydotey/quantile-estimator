@@ -9,7 +9,7 @@
     <packaging>pom</packaging>
     <name>mydotey quantile</name>
     <description>quantile algorithms, util</description>
-    <url>https://github.com/mydotey/quantile</url>
+    <url>https://github.com/mydotey/quantile-estimator</url>
 
     <licenses>
         <license>
@@ -34,8 +34,8 @@
     </developers>
 
     <scm>
-        <url>https://github.com/mydotey/quantile</url>
-        <connection>git@github.com:mydotey/quantile.git</connection>
+        <url>https://github.com/mydotey/quantile-estimator</url>
+        <connection>git@github.com:mydotey/quantile-estimator.git</connection>
     </scm>  
 
     <properties>
@@ -65,11 +65,6 @@
             <dependency>
                 <groupId>org.mydotey.quantile</groupId>
                 <artifactId>quantile-estimator</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.mydotey.quantile</groupId>
-                <artifactId>quantile-util</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
