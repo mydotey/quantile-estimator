@@ -136,7 +136,7 @@ public abstract class QuantileEstimatorTest {
     public void test5_3() {
         int count = 10000;
         int upperBound = 1000;
-        double errorRate = 0.001;
+        double errorRate = 0.005;
         test5(count, upperBound, errorRate);
     }
 
