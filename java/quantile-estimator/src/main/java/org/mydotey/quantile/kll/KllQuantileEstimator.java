@@ -217,6 +217,9 @@ public class KllQuantileEstimator<T> implements QuantileEstimator<T> {
 
         @Override
         public int compareTo(ItemAndWeight o) {
+            if (o == null)
+                return 1;
+
             int r = KllQuantileEstimator.this._config.getComparator().compare(item, o.item);
             if (r != 0)
                 return r;

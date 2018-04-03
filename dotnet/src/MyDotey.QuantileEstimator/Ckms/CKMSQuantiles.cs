@@ -131,6 +131,7 @@ namespace MyDotey.Quantile.Ckms
             int desired = (int)(q * count);
 
             IEnumerator<Item> it = samples.GetEnumerator();
+            it.MoveNext();
             Item prev, cur;
             cur = it.Current;
             while (it.MoveNext())

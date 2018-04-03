@@ -98,6 +98,7 @@ namespace MyDotey.Quantile.Tests
             Console.WriteLine();
 
             items.Sort();
+
             Console.WriteLine("sorted: " + items);
             Console.WriteLine();
 
@@ -125,7 +126,7 @@ namespace MyDotey.Quantile.Tests
         {
             int count = 100;
             int upperBound = 1000;
-            double errorRate = 0.05;
+            double errorRate = 0.10;
             Test5Internal(count, upperBound, errorRate);
         }
 
@@ -134,7 +135,7 @@ namespace MyDotey.Quantile.Tests
         {
             int count = 1000;
             int upperBound = 1000;
-            double errorRate = 0.01;
+            double errorRate = 0.10;
             Test5Internal(count, upperBound, errorRate);
         }
 
@@ -143,7 +144,7 @@ namespace MyDotey.Quantile.Tests
         {
             int count = 10000;
             int upperBound = 1000;
-            double errorRate = 0.005;
+            double errorRate = 0.10;
             Test5Internal(count, upperBound, errorRate);
         }
 
@@ -165,8 +166,8 @@ namespace MyDotey.Quantile.Tests
                 while (data.Count < c)
                 {
                     int item = random.Next(b);
-                    int itemCount = itemsAndCounts[item];
-                    if (itemCount < singleItemCount)
+                    bool success = itemsAndCounts.TryGetValue(item, out int itemCount);
+                    if (success && itemCount < singleItemCount)
                     {
                         itemsAndCounts[item] = itemCount++;
                         data.Add(item);
@@ -195,6 +196,7 @@ namespace MyDotey.Quantile.Tests
             Console.WriteLine();
 
             items.Sort();
+
             Console.WriteLine("sorted: " + items);
             Console.WriteLine();
 

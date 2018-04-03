@@ -41,7 +41,7 @@ namespace MyDotey.Quantile.Tests
             List<long> shuffle = new List<long>();
             for (int i = 0; i < window_size; i++)
             {
-                shuffle[i] = i;
+                shuffle.Add(i);
             }
             Shuffle(shuffle);
 

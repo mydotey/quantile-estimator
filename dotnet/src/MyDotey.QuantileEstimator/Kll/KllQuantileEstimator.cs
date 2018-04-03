@@ -122,7 +122,7 @@ namespace MyDotey.Quantile.Kll
             {
                 for (int j = 0; j < _compactors[i].Count; j++)
                 {
-                    itemsAndWeights.Add(new ItemAndWeight(_compactors[i][j], (int)Math.Pow(2, i)));
+                    itemsAndWeights.Add(new ItemAndWeight(this, _compactors[i][j], (int)Math.Pow(2, i)));
                 }
             }
 
@@ -182,7 +182,7 @@ namespace MyDotey.Quantile.Kll
             {
                 for (int j = 0; j < _compactors[i].Count; j++)
                 {
-                    itemsAndWeights.Add(new ItemAndWeight(_compactors[i][j], (int)Math.Pow(2, i)));
+                    itemsAndWeights.Add(new ItemAndWeight(this, _compactors[i][j], (int)Math.Pow(2, i)));
                 }
             }
 
@@ -193,7 +193,7 @@ namespace MyDotey.Quantile.Kll
             foreach (ItemAndWeight itemAndWeight in itemsAndWeights)
             {
                 cumWeight += itemAndWeight.weight;
-                ranksList.Add(new ItemAndWeight(itemAndWeight.item, cumWeight));
+                ranksList.Add(new ItemAndWeight(this, itemAndWeight.item, cumWeight));
             }
 
             return ranksList;
@@ -247,19 +247,19 @@ namespace MyDotey.Quantile.Kll
 
             private KllQuantileEstimator<T> _kllQuantileEstimator;
 
-            public ItemAndWeight(KllQuantileEstimator<T> kllQuantileEstimator)
+            public ItemAndWeight(KllQuantileEstimator<T> kllQuantileEstimator, T item, int weight)
             {
                 _kllQuantileEstimator = kllQuantileEstimator;
-            }
 
-            public ItemAndWeight(T item, int weight)
-            {
                 this.item = item;
                 this.weight = weight;
             }
 
             public virtual int CompareTo(ItemAndWeight o)
             {
+                if (o == null)
+                    return 1;
+
                 int r = _kllQuantileEstimator._config.Comparer.Compare(item, o.item);
                 if (r != 0)
                     return r;

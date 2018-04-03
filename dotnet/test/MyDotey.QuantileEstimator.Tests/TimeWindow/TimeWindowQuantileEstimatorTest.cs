@@ -45,6 +45,7 @@ namespace MyDotey.Quantile.Tests
             Console.WriteLine();
 
             items.Sort();
+
             Console.WriteLine("sorted: " + items);
             Console.WriteLine();
 
