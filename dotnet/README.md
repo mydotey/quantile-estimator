@@ -59,14 +59,16 @@ IQuantileEstimator<Double> quantileEstimator = QuantileEstimators.NewClassicEsti
 ### CKMS
 
 ```cs
-CkmsQuantileEstimatorConfig<Double>.Builder builder = QuantileEstimators.NewCkmsEstimatorConfigBuilder<Double>();
+CkmsQuantileEstimatorConfig<Double>.Builder builder =
+    QuantileEstimators.NewCkmsEstimatorConfigBuilder<Double>();
 IComparer<Double> comparer = DoubleComparer.DEFAULT;
 double quantile = 0.01; // [0, 1]
 double error = 0.001; // [0, 1]
 builder.SetComparer(comparer).AddQuantileConfig(quantile, error)
     .AddQuantileConfig(0.25, 0.01).AddQuantileConfig(0.5, 0.01).AddQuantileConfig(0.75, 0.01)
     .AddQuantileConfig(0.99, 0.001);
-IQuantileEstimator<Double> quantileEstimator = QuantileEstimators.NewCkmsEstimator<Double>(builder.Build());
+IQuantileEstimator<Double> quantileEstimator =
+    QuantileEstimators.NewCkmsEstimator<Double>(builder.Build());
 ```
 
 ### GK
