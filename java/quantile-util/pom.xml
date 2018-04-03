@@ -10,7 +10,6 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <groupId>org.mydotey.quantile</groupId>
     <artifactId>quantile-util</artifactId>
     <packaging>jar</packaging>
     <name>mydotey quantile util</name>

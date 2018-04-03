@@ -1,6 +1,7 @@
 package org.mydotey.quantile.facade;
 
 import java.util.Comparator;
+import java.util.function.Supplier;
 
 import org.mydotey.quantile.QuantileEstimator;
 import org.mydotey.quantile.ckms.CkmsQuantileEstimator;
@@ -13,6 +14,8 @@ import org.mydotey.quantile.gk.GkQuantileEstimator;
 import org.mydotey.quantile.gk.GkQuantileEstimatorConfig;
 import org.mydotey.quantile.kll.KllQuantileEstimator;
 import org.mydotey.quantile.kll.KllQuantileEstimatorConfig;
+import org.mydotey.quantile.timewindow.TimeWindowQuantileEstimator;
+import org.mydotey.quantile.timewindow.TimeWindowQuantileEstimatorConfig;
 import org.mydotey.quantile.value.Calculator;
 
 /**
@@ -68,9 +71,19 @@ public class QuantileEstimators {
         return decorate(quantileEstimator);
     }
 
+    public static <T> QuantileEstimator<T> newTimeWindowEstimator(
+            Supplier<QuantileEstimator<T>> quantileEstimatorSupplier, long timeWindowMillis,
+            long rotateDurationMillis) {
+        return new TimeWindowQuantileEstimator<>(new TimeWindowQuantileEstimatorConfig<>(quantileEstimatorSupplier,
+                timeWindowMillis, rotateDurationMillis));
+    }
+
+    public static <T> QuantileEstimator<T> newConcurrentQuantileEstimator(QuantileEstimator<T> quantileEstimator) {
+        return new ConcurrencyDecorator<>(quantileEstimator);
+    }
+
     protected static <T> QuantileEstimator<T> decorate(QuantileEstimator<T> quantileEstimator) {
-        ConcurrencyDecorator<T> concurrencyDecorator = new ConcurrencyDecorator<>(quantileEstimator);
-        ValidationDecorator<T> validationDecorator = new ValidationDecorator<>(concurrencyDecorator);
+        ValidationDecorator<T> validationDecorator = new ValidationDecorator<>(quantileEstimator);
         return validationDecorator;
     }
 
