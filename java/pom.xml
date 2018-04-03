@@ -53,7 +53,6 @@
 
     <modules>
         <module>quantile-estimator</module>
-        <module>quantile-util</module>
     </modules>
 
     <dependencyManagement>
