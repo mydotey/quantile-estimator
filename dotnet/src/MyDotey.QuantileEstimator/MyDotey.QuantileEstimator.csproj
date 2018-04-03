@@ -2,6 +2,22 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyTitle>MyDotey.QuantileEstimator</AssemblyTitle>
+    <AssemblyName>MyDotey.QuantileEstimator</AssemblyName>
+    <PackageId>MyDotey.QuantileEstimator</PackageId>
+    <Version>1.0.2</Version>
+    <Authors>koqizhao</Authors>
+    <Description>Commmon Library collecting multiple quantile algorithms for streaming data, concurrent and easy to use.</Description>
+    <Copyright>koqizhao</Copyright>
+
+    <PackageTags>quantile;percentile</PackageTags>
+    <PackageReleaseNotes>Commmon Library collecting multiple quantile algorithms for streaming data, concurrent and easy to use.</PackageReleaseNotes>
+    <PackageIconUrl>http://numl.net/images/ico.png</PackageIconUrl>
+    <PackageProjectUrl>https://github.com/mydotey/quantile-estimator</PackageProjectUrl>
+    <PackageLicenseUrl>https://opensource.org/licenses/Apache-2.0</PackageLicenseUrl>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/mydotey/quantile-estimator.git</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
