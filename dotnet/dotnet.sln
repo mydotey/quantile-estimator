@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuantileEstimator", "src\QuantileEstimator\QuantileEstimator.csproj", "{9AFBA30B-6219-4654-983B-4A023870D1C5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyDotey.QuantileEstimator", "src\MyDotey.QuantileEstimator\MyDotey.QuantileEstimator.csproj", "{9AFBA30B-6219-4654-983B-4A023870D1C5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuantileEstimatorTest", "test\QuantileEstimatorTest\QuantileEstimatorTest.csproj", "{FABE9521-7C26-4B34-B9B4-F1AB17A626CA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyDotey.QuantileEstimator.Tests", "test\MyDotey.QuantileEstimator.Tests\MyDotey.QuantileEstimator.Tests.csproj", "{FABE9521-7C26-4B34-B9B4-F1AB17A626CA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

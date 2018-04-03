@@ -38,7 +38,7 @@ import org.slf4j.LoggerFactory;
  * "Space-efficient online computation of quantile summaries" in SIGMOD 2001
  * 
  */
-public class QuantileEstimationGK<T> {
+class QuantileEstimationGK<T> {
 
     private static Logger logger = LoggerFactory.getLogger(QuantileEstimationGK.class);
 
@@ -123,6 +123,10 @@ public class QuantileEstimationGK<T> {
 
         // edge case of wanting max value
         return samples.get(samples.size() - 1).value;
+    }
+
+    protected boolean isEmpty() {
+        return samples.isEmpty();
     }
 
     protected void defensiveReset() {

@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\QuantileEstimator\QuantileEstimator.csproj" />
+    <ProjectReference Include="..\..\src\MyDotey.QuantileEstimator\MyDotey.QuantileEstimator.csproj" />
   </ItemGroup>
 
 </Project>

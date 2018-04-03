@@ -27,7 +27,7 @@ public class ClassicQuantileEstimatorConfig<T> {
         return _comparator;
     }
 
-    public Calculator<T> getValueCalculator() {
+    public Calculator<T> getCalculator() {
         return _calculator;
     }
 

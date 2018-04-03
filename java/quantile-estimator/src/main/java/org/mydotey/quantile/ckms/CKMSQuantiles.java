@@ -145,6 +145,10 @@ class CKMSQuantiles<T> {
         return samples.getLast().value;
     }
 
+    protected boolean isEmpty() {
+        return samples.isEmpty();
+    }
+
     /**
      * Specifies the allowable error for this rank, depending on which quantiles
      * are being targeted.

@@ -1,7 +1,8 @@
 package org.mydotey.quantile.gk;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 import org.junit.Test;
@@ -38,12 +39,12 @@ public class GkQuantileEstimatorTest extends QuantileEstimatorTest {
         final double epsilon = 0.001;
 
         System.out.println("Generating random longs...");
-        long[] shuffle = new long[window_size];
-        for (int i = 0; i < shuffle.length; i++) {
-            shuffle[i] = i;
+        List<Long> shuffle = new ArrayList<>();
+        for (long i = 0; i < window_size; i++) {
+            shuffle.add(i);
         }
         Random rand = new Random(0xDEADBEEF);
-        Collections.shuffle(Arrays.asList(shuffle), rand);
+        Collections.shuffle(shuffle, rand);
 
         System.out.println("Inserting into estimator...");
         QuantileEstimationGK<Long> estimator = new QuantileEstimationGK<>(LongComparator.DEFAULT, epsilon, 1000);

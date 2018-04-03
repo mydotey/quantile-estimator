@@ -49,7 +49,7 @@ public class CkmsQuantileEstimatorConfig<T> {
 
     }
 
-    public static <T> Builder<T> newBuiler() {
+    public static <T> Builder<T> newBuilder() {
         return new Builder<>();
     }
 

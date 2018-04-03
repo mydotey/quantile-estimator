@@ -56,7 +56,7 @@ public class QuantileEstimators {
     }
 
     public static <T> CkmsQuantileEstimatorConfig.Builder<T> newCkmsEstimatorConfigBuilder() {
-        return CkmsQuantileEstimatorConfig.<T> newBuiler();
+        return CkmsQuantileEstimatorConfig.<T> newBuilder();
     }
 
     public static <T> QuantileEstimator<T> newCkmsEstimator(CkmsQuantileEstimatorConfig<T> config) {

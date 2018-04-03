@@ -35,7 +35,7 @@ public class GkQuantileEstimator<T> implements QuantileEstimator<T> {
         HashMap<Double, T> results = null;
         for (Double quantile : quantiles) {
             T result = _quantileEstimationGK.query(quantile);
-            if (result == null)
+            if (_quantileEstimationGK.isEmpty())
                 return null;
 
             if (results == null)

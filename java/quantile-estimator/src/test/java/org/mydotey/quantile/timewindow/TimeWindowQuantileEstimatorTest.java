@@ -29,7 +29,7 @@ public class TimeWindowQuantileEstimatorTest extends QuantileEstimatorTest {
         Supplier<QuantileEstimator<Long>> longSupplier = () -> QuantileEstimators
                 .newClassicEstimator(LongComparator.DEFAULT, LongCalculator.DEFAULT);
         _estimators.put(Long.class, QuantileEstimators.newTimeWindowEstimator(longSupplier,
-                TimeUnit.SECONDS.toMillis(10), TimeUnit.SECONDS.toMillis(1)));
+                TimeUnit.SECONDS.toMillis(5), TimeUnit.SECONDS.toMillis(1)));
 
         Supplier<QuantileEstimator<Integer>> intSupplier = () -> QuantileEstimators
                 .newClassicEstimator(IntComparator.DEFAULT, IntCalculator.DEFAULT);

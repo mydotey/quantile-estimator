@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
  */
 public class ClassicQuantileEstimator<T> implements QuantileEstimator<T> {
 
-    private static Logger logger = LoggerFactory.getLogger(ClassicQuantileEstimator.class);
+    private static Logger _logger = LoggerFactory.getLogger(ClassicQuantileEstimator.class);
 
     private ClassicQuantileEstimatorConfig<T> _config;
 
@@ -45,7 +45,7 @@ public class ClassicQuantileEstimator<T> implements QuantileEstimator<T> {
 
         HashMap<Double, T> results = new HashMap<>();
         double n = _values.size() - 1;
-        Calculator<T> caculator = _config.getValueCalculator();
+        Calculator<T> caculator = _config.getCalculator();
         for (int i = 0; i < quantiles.size(); i++) {
             Double quantile = quantiles.get(i);
             double pos = quantile * n;
@@ -65,7 +65,7 @@ public class ClassicQuantileEstimator<T> implements QuantileEstimator<T> {
 
     protected void defensiveReset() {
         if (_values.size() == Integer.MAX_VALUE) {
-            logger.warn("count reached int.max, reset and prevent overflow");
+            _logger.warn("count reached int.max, reset and prevent overflow");
 
             _values.clear();
         }

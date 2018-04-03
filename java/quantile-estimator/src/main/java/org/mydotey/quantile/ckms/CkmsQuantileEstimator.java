@@ -42,7 +42,7 @@ public class CkmsQuantileEstimator<T> implements QuantileEstimator<T> {
         HashMap<Double, T> results = null;
         for (Double quantile : quantiles) {
             T result = _ckmsQuantiles.get(quantile);
-            if (result == null)
+            if (_ckmsQuantiles.isEmpty())
                 return null;
 
             if (results == null)
