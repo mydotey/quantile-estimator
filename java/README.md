@@ -88,7 +88,7 @@ QuantileEstimator<Double> quantileEstimator = QuantileEstimators.newGkEstimator(
 ```java
 Comparator<Double> comparator = DoubleComparator.DEFAULT;
 int k = 200; // first compactor size
-double c = 2.0 / 3.0; // compact rate
+double c = 2.0 / 3.0; // compact rate, [0.5, 1)
 QuantileEstimator<Double> quantileEstimator = QuantileEstimators.newKllEstimator(
     DoubleComparator.DEFAULT, 200, 2.0 / 3.0);
 ```
