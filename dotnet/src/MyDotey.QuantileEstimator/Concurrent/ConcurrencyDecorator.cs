@@ -55,7 +55,7 @@ namespace MyDotey.Quantile.Concurrent
 
         protected virtual void BatchAdd()
         {
-            for (_cache.TryDequeue(out T cached); cached != null; _cache.TryDequeue(out cached))
+            for (bool success = _cache.TryDequeue(out T cached); success; success = _cache.TryDequeue(out cached))
                 _quantileEstimator.Add(cached);
         }
     }

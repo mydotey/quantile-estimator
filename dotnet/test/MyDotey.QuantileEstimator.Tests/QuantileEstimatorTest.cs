@@ -4,6 +4,9 @@ using System.Collections.Concurrent;
 using System.Linq;
 
 using Xunit;
+using NLog;
+using NLog.Config;
+using NLog.Targets;
 
 /**
  * @author koqizhao
@@ -18,6 +21,11 @@ namespace MyDotey.Quantile.Tests
 
         public QuantileEstimatorTest()
         {
+            var config = new LoggingConfiguration();
+            var logconsole = new ConsoleTarget() { Name = "logconsole" };
+            config.LoggingRules.Add(new NLog.Config.LoggingRule("*", LogLevel.Trace, logconsole));
+            NLog.LogManager.Configuration = config;
+
             AddQuantileEsimators();
         }
 

@@ -11,6 +11,8 @@ using MyDotey.Quantile.Concurrent;
 using MyDotey.Quantile.Ckms;
 
 using Xunit;
+using MyDotey.ObjectPool.Facade;
+using MyDotey.ObjectPool.ThreadPool;
 
 /**
  * @author koqizhao
@@ -43,64 +45,68 @@ namespace MyDotey.Quantile.Tests
             List<int> items = dataProvider(count, upperBound);
 
             int concurrency = 20;
-            object @lock = new object();
-            CountdownEvent latch = new CountdownEvent(concurrency);
-            for (int i = 0; i < concurrency; i++)
+            IBuilder builder = ThreadPools.NewThreadPoolConfigBuilder();
+            using (IThreadPool threadPool = ThreadPools.NewThreadPool(builder.SetMaxSize(concurrency).SetMinSize(concurrency).Build()))
             {
-                Task.Run(() =>
+                object @lock = new object();
+                CountdownEvent latch = new CountdownEvent(concurrency);
+                for (int i = 0; i < concurrency; i++)
                 {
-                    lock (@lock)
+                    threadPool.Submit(() =>
                     {
-                        Monitor.Wait(@lock);
-                    }
+                        lock (@lock)
+                        {
+                            Monitor.Wait(@lock);
+                        }
 
-                    items.ForEach(item => quantileEstimator.Add(item));
-                    quantileEstimator.Get(quantiles);
-                    latch.Signal();
-                });
-            }
+                        items.ForEach(item => quantileEstimator.Add(item));
+                        quantileEstimator.Get(quantiles);
+                        latch.Signal();
+                    });
+                }
 
-            Thread.Sleep(1 * 1000);
+                Thread.Sleep(1 * 1000);
 
-            lock (@lock)
-            {
-                Monitor.PulseAll(@lock);
-            }
+                lock (@lock)
+                {
+                    Monitor.PulseAll(@lock);
+                }
 
-            latch.Wait();
+                latch.Wait();
 
-            Console.WriteLine("data: " + items);
-            Console.WriteLine();
-
-            items.Sort();
-
-            Console.WriteLine("sorted: " + items);
-            Console.WriteLine();
-
-            Dictionary<Double, int> quantileResults = new Dictionary<Double, int>();
-            foreach (Double quantile in quantiles)
-            {
-                int pos = (int)(count * quantile) - 1;
-                if (pos < 0)
-                    pos = 0;
-
-                int item = items[pos];
-                quantileEstimator.Add(item);
-                quantileResults[quantile] = item;
-            }
-
-            Dictionary<Double, int> results = quantileEstimator.Get(quantiles);
-            for (int i = 0; i < quantiles.Count; i++)
-            {
-                Double quantile = quantiles[i];
-                int expected = quantileResults[quantile];
-                int actual = results[quantile];
-                int actualError = Math.Abs(actual - expected);
-                Console.WriteLine("quantile " + quantile + ", expected: " + expected + ", actual: " + actual + ", error: "
-                                    + actualError);
+                Console.WriteLine("data: " + items);
                 Console.WriteLine();
 
-                Assert.True(actualError <= maxError);
+                items.Sort();
+
+                Console.WriteLine("sorted: " + items);
+                Console.WriteLine();
+
+                Dictionary<Double, int> quantileResults = new Dictionary<Double, int>();
+                foreach (Double quantile in quantiles)
+                {
+                    int pos = (int)(count * quantile) - 1;
+                    if (pos < 0)
+                        pos = 0;
+
+                    int item = items[pos];
+                    quantileEstimator.Add(item);
+                    quantileResults[quantile] = item;
+                }
+
+                Dictionary<Double, int> results = quantileEstimator.Get(quantiles);
+                for (int i = 0; i < quantiles.Count; i++)
+                {
+                    Double quantile = quantiles[i];
+                    int expected = quantileResults[quantile];
+                    int actual = results[quantile];
+                    int actualError = Math.Abs(actual - expected);
+                    Console.WriteLine("quantile " + quantile + ", expected: " + expected + ", actual: " + actual + ", error: "
+                                        + actualError);
+                    Console.WriteLine();
+
+                    Assert.True(actualError <= maxError);
+                }
             }
         }
     }
