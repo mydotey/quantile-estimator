@@ -73,40 +73,40 @@ namespace MyDotey.Quantile.Tests
                 }
 
                 latch.Wait();
+            }
 
-                Console.WriteLine("data: " + items);
+            Console.WriteLine("data: " + items);
+            Console.WriteLine();
+
+            items.Sort();
+
+            Console.WriteLine("sorted: " + items);
+            Console.WriteLine();
+
+            Dictionary<Double, int> quantileResults = new Dictionary<Double, int>();
+            foreach (Double quantile in quantiles)
+            {
+                int pos = (int)(count * quantile) - 1;
+                if (pos < 0)
+                    pos = 0;
+
+                int item = items[pos];
+                quantileEstimator.Add(item);
+                quantileResults[quantile] = item;
+            }
+
+            Dictionary<Double, int> results = quantileEstimator.Get(quantiles);
+            for (int i = 0; i < quantiles.Count; i++)
+            {
+                Double quantile = quantiles[i];
+                int expected = quantileResults[quantile];
+                int actual = results[quantile];
+                int actualError = Math.Abs(actual - expected);
+                Console.WriteLine("quantile " + quantile + ", expected: " + expected + ", actual: " + actual + ", error: "
+                                    + actualError);
                 Console.WriteLine();
 
-                items.Sort();
-
-                Console.WriteLine("sorted: " + items);
-                Console.WriteLine();
-
-                Dictionary<Double, int> quantileResults = new Dictionary<Double, int>();
-                foreach (Double quantile in quantiles)
-                {
-                    int pos = (int)(count * quantile) - 1;
-                    if (pos < 0)
-                        pos = 0;
-
-                    int item = items[pos];
-                    quantileEstimator.Add(item);
-                    quantileResults[quantile] = item;
-                }
-
-                Dictionary<Double, int> results = quantileEstimator.Get(quantiles);
-                for (int i = 0; i < quantiles.Count; i++)
-                {
-                    Double quantile = quantiles[i];
-                    int expected = quantileResults[quantile];
-                    int actual = results[quantile];
-                    int actualError = Math.Abs(actual - expected);
-                    Console.WriteLine("quantile " + quantile + ", expected: " + expected + ", actual: " + actual + ", error: "
-                                        + actualError);
-                    Console.WriteLine();
-
-                    Assert.True(actualError <= maxError);
-                }
+                Assert.True(actualError <= maxError);
             }
         }
     }

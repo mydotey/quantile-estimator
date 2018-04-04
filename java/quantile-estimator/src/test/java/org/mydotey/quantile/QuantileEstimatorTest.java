@@ -120,7 +120,7 @@ public abstract class QuantileEstimatorTest {
     public void test5() {
         int count = 100;
         int upperBound = 1000;
-        double errorRate = 0.05;
+        double errorRate = 0.10;
         test5(count, upperBound, errorRate);
     }
 

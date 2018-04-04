@@ -21,11 +21,20 @@ namespace MyDotey.Quantile.Tests
         }
 
         [Fact]
+        public override void Test5()
+        {
+            int count = 100;
+            int upperBound = 1000;
+            double errorRate = 0.02;
+            Test5Internal(count, upperBound, errorRate);
+        }
+ 
+        [Fact]
         public override void Test5_2()
         {
             int count = 1000;
             int upperBound = 1000;
-            double errorRate = 0.01;
+            double errorRate = 0.02;
             Test5Internal(count, upperBound, errorRate);
         }
 
@@ -34,7 +43,7 @@ namespace MyDotey.Quantile.Tests
         {
             int count = 10000;
             int upperBound = 1000;
-            double errorRate = 0.05;
+            double errorRate = 0.02;
             Test5Internal(count, upperBound, errorRate);
         }
     }

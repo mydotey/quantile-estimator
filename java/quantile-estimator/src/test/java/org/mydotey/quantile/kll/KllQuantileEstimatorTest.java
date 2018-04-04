@@ -19,10 +19,18 @@ public class KllQuantileEstimatorTest extends QuantileEstimatorTest {
     }
 
     @Override
+    public void test5() {
+        int count = 100;
+        int upperBound = 1000;
+        double errorRate = 0.02;
+        test5(count, upperBound, errorRate);
+    }
+
+    @Override
     public void test5_2() {
         int count = 1000;
         int upperBound = 1000;
-        double errorRate = 0.01;
+        double errorRate = 0.02;
         test5(count, upperBound, errorRate);
     }
 
@@ -30,7 +38,7 @@ public class KllQuantileEstimatorTest extends QuantileEstimatorTest {
     public void test5_3() {
         int count = 10000;
         int upperBound = 1000;
-        double errorRate = 0.05;
+        double errorRate = 0.02;
         test5(count, upperBound, errorRate);
     }
 

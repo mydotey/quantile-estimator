@@ -111,9 +111,9 @@ namespace MyDotey.Quantile.Tests
             Console.WriteLine();
 
             Dictionary<Double, long> quantileResults = new Dictionary<Double, long>()
-    {
-        { 0.95, 944L }
-    };
+            {
+                { 0.95, 944L }
+            };
 
             List<Double> quantiles = quantileResults.Keys.ToList();
             Dictionary<Double, long> results = quantileEstimator.Get(quantiles);
@@ -143,7 +143,7 @@ namespace MyDotey.Quantile.Tests
         {
             int count = 1000;
             int upperBound = 1000;
-            double errorRate = 0.10;
+            double errorRate = 0.01;
             Test5Internal(count, upperBound, errorRate);
         }
 
@@ -152,7 +152,7 @@ namespace MyDotey.Quantile.Tests
         {
             int count = 10000;
             int upperBound = 1000;
-            double errorRate = 0.10;
+            double errorRate = 0.005;
             Test5Internal(count, upperBound, errorRate);
         }
 

@@ -30,14 +30,14 @@ public class ConcurrentQuantileEstimatorTest extends QuantileEstimatorTest {
         CkmsQuantileEstimatorConfig.Builder<Long> builder = QuantileEstimators.newCkmsEstimatorConfigBuilder();
         builder.setComparator(LongComparator.DEFAULT).addQuantileConfig(0.01, 0.001).addQuantileConfig(0.25, 0.01)
                 .addQuantileConfig(0.5, 0.01).addQuantileConfig(0.75, 0.01).addQuantileConfig(0.99, 0.001);
-        _estimators.put(Long.class, QuantileEstimators
-                .newConcurrentEstimator(QuantileEstimators.newCkmsEstimator(builder.build())));
+        _estimators.put(Long.class,
+                QuantileEstimators.newConcurrentEstimator(QuantileEstimators.newCkmsEstimator(builder.build())));
 
         CkmsQuantileEstimatorConfig.Builder<Integer> builder2 = QuantileEstimators.newCkmsEstimatorConfigBuilder();
         builder2.setComparator(IntComparator.DEFAULT).addQuantileConfig(0.01, 0.001).addQuantileConfig(0.25, 0.01)
                 .addQuantileConfig(0.5, 0.01).addQuantileConfig(0.75, 0.01).addQuantileConfig(0.99, 0.001);
-        _estimators.put(Integer.class, QuantileEstimators
-                .newConcurrentEstimator(QuantileEstimators.newCkmsEstimator(builder2.build())));
+        _estimators.put(Integer.class,
+                QuantileEstimators.newConcurrentEstimator(QuantileEstimators.newCkmsEstimator(builder2.build())));
     }
 
     @Override
@@ -46,40 +46,46 @@ public class ConcurrentQuantileEstimatorTest extends QuantileEstimatorTest {
         int maxError = (int) (upperBound * errorRate);
         List<Integer> items = dataProvider.apply(count, upperBound);
 
-        int concurrency = 20;
-        ExecutorService executor = Executors.newFixedThreadPool(concurrency);
-        Object lock = new Object();
-        CountDownLatch latch = new CountDownLatch(concurrency);
-        for (int i = 0; i < concurrency; i++) {
-            executor.submit(() -> {
-                synchronized (lock) {
-                    try {
-                        lock.wait();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+        ExecutorService executor = null;
+        try {
+            int concurrency = 20;
+            executor = Executors.newFixedThreadPool(concurrency);
+            Object lock = new Object();
+            CountDownLatch latch = new CountDownLatch(concurrency);
+            for (int i = 0; i < concurrency; i++) {
+                executor.submit(() -> {
+                    synchronized (lock) {
+                        try {
+                            lock.wait();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                     }
-                }
 
-                items.forEach(item -> quantileEstimator.add(item));
-                quantileEstimator.get(quantiles);
-                latch.countDown();
-            });
-        }
+                    items.forEach(item -> quantileEstimator.add(item));
+                    quantileEstimator.get(quantiles);
+                    latch.countDown();
+                });
+            }
 
-        try {
-            Thread.sleep(TimeUnit.SECONDS.toMillis(1));
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+            try {
+                Thread.sleep(TimeUnit.SECONDS.toMillis(1));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
-        synchronized (lock) {
-            lock.notifyAll();
-        }
+            synchronized (lock) {
+                lock.notifyAll();
+            }
 
-        try {
-            latch.await();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            try {
+                latch.await();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        } finally {
+            if (executor != null)
+                executor.shutdownNow();
         }
 
         System.out.println("data: " + items);
