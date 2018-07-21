@@ -3,7 +3,7 @@
 ## NuGet package
 
 ```sh
-dotnet Add package MyDotey.QuantileEstimator -v 1.0.2
+dotnet add package MyDotey.QuantileEstimator -v 1.0.2
 ```
 
 ## Usage

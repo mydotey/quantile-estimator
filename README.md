@@ -64,4 +64,4 @@ Implemented in java/dotnet separately. Code is clean. Easy to read.
 
 ## Developers
 
-* Qiang Zhao <koqizhao@outllook.com>
+* Qiang Zhao <koqizhao@outlook.com>
